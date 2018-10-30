@@ -1,0 +1,14 @@
+[
+  {
+    "question": "bears eat beets",
+    "answer": false
+  },
+  {
+    "question": "braden likes ian",
+    "answer": false
+  },
+  {
+    "question": "Minkyuk is a non-existent",
+    "answer": true
+  }
+]
