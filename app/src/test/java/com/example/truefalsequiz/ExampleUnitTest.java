@@ -18,17 +18,13 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
-//    @Test
-//    public void nextQuestionisCorrect(){
-//        Question q1 = new Question("q1",;)
-//        Question q2 = new Question("q2",;)
-//        Question q3 = new Question("q3",;)
-//
-//        List<Question> questions = new ArrayList<>();
-//        questions.add(q1);
-//        questions.add(q2);
-//        questions.add(q3);
-//
-//
-//    }
+    @Test
+    public void addition2_isCorrect() {
+        assertEquals(5,3+2);
+    }
+
+    @Test
+    public void question_isCorrect(){
+        assertEquals("What is your name", "what is yoour name");
+    }
 }

@@ -1,28 +1,25 @@
 package com.example.truefalsequiz;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
+
+
+
 public class Quiz {
-
-    private int score;
-    private int currentQuestions;
-
     private List<Question> questionArrayList;
+    private int score;
+    private int currentQuestion;
 
-
-    public Quiz(List<Question> questions){
+    Quiz(List<Question> questions) {
         this.questionArrayList = questions;
-    }
 
+    }
     public Quiz(){
         questionArrayList = null;
-        score = 0;
-        currentQuestions = 0;
-
+        score= 0;
+        currentQuestion =0;
     }
-
-
     public int getScore() {
         return score;
     }
@@ -31,28 +28,29 @@ public class Quiz {
         this.score = score;
     }
 
-    public int getCurrentQuestions() {
-        return currentQuestions;
+    public int getCurrentQuestion() {
+        return currentQuestion;
     }
 
-    public void setCurrentQuestions(int currentQuestions) {
-        this.currentQuestions = currentQuestions;
+    public void setCurrentQuestion(int number) {
+        this.currentQuestion=number;
+
     }
 
     public void nextQuestion(){
-        currentQuestions = getCurrentQuestions() + 1;
+        if(isThereAnotherQuestion()) {
+            currentQuestion += 1;
+        }
     }
-
-    public void checkQuestion(){
-
-    }
-
-    public boolean hasMoreQuestions() {
-        if (currentQuestions < questionArrayList.size()){
+    public boolean isThereAnotherQuestion(){
+        if(currentQuestion < questionArrayList.size()){
             return true;
         }
         else{
             return false;
         }
     }
+
+
 }
+

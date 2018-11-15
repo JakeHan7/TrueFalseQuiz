@@ -4,6 +4,7 @@ public class Question {
 
     private String question;
     private boolean answer;
+    private int score;
 
     public Question(){
          question = "";
@@ -15,12 +16,6 @@ public class Question {
         this.answer = answer;
 
     }
-
-    public boolean checkAnswer(boolean useAnswer) {
-       return useAnswer == isAnswer();
-    }
-
-
     public String getQuestion() {
         return question;
     }
@@ -36,8 +31,9 @@ public class Question {
     public void setAnswer(boolean answer) {
         this.answer = answer;
     }
-
-    public void getNextQuestion(){
+    public boolean checkAnswer(boolean useAnswer){
+        return useAnswer == isAnswer();
     }
+
 
 }

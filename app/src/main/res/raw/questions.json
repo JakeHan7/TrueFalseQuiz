@@ -8,6 +8,22 @@
     "answer": false
   },
   {
+    "question": "Animals that lay eggs don't have belly buttons",
+    "answer": true
+  },
+  {
+    "question": "Broccoli is the only vegetable that is also a flower",
+    "answer": true
+  },
+  {
+    "question": "Dogs like to eat mice",
+    "answer": false
+  },
+  {
+    "question": "Water is wet",
+    "answer": true
+  },
+  {
     "question": "Minkyuk is a non-existent",
     "answer": true
   }

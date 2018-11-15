@@ -20,89 +20,77 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-
-    public static final String TAG = "MainActivity";
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String TAG = "mainActivity";
+    public int score;
     private Quiz quiz;
-    private Question[] questions;
-    private TextView displayedQuestion;
-    private Button truebutton;
-    private Button falsebutton;
     private boolean userAnswer;
-    private int score;
-    private TextView displayedScore;
-
-
+    private TextView questionDisplayed;
+    private TextView scoreDisplayed;
+    private Button falsee;
+    private Button truee;
+    private Question[] questions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        initializeQuiz();
         wireWidgets();
-        setonClickListeners();
-        displayNextQuestion();
-        //
-        //
+        setOnClickListeners();
+        score = 0;
+        InputStream XmlFileInputStream = getResources().openRawResource(R.raw.questions);
 
-        //create a gson string
-    }
+        String jsonstring = readTextFile(XmlFileInputStream);
+        Log.d(TAG, "onCreate: " + jsonstring);
 
-    private void initializeQuiz() {
-        InputStream Stream = getResources().openRawResource(R.raw.questions);
-        String jsonString = readTextFile(Stream);
-        Log.d(TAG , "onCreate" + jsonString);
         Gson gson = new Gson();
-        Question[] questions = gson.fromJson(jsonString, Question[].class);
-        List<Question> questionList = Arrays.asList(questions);
-        Log.d(TAG, "onCreate: " + questionList.toString());
-        quiz = new Quiz(questionList);
-        if ((userAnswer)){
-            if (quiz.hasMoreQuestions()){
-                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this,"",Toast.LENGTH_SHORT);
-            }
+        questions = gson.fromJson(jsonstring, Question[].class);
+
+        List<Question> questionsList = Arrays.asList(questions);
+        quiz = new com.example.truefalsequiz.Quiz(questionsList);
+        displayScore();
+        displayQuestion();
+
+    }
+
+    private void displayScore() {
+        if(quiz.isThereAnotherQuestion()) {
+            scoreDisplayed.setText("SCORE :" + score);
+        }else{
+            scoreDisplayed.setText("SCORE :" + score);
         }
     }
 
-    private void displayNextQuestion() {
-        if (quiz.hasMoreQuestions()) {
-            Question question = questions[quiz.getCurrentQuestions()];
-            displayedQuestion.setText(question.getQuestion());
-        }
-            else{
-
-            displayedQuestion.setText("WE ARE DONE BOys");
+    private void sendMessage() {
+        if ((userAnswer)) {
+            Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Wrong", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void displayScore(){
-        if(quiz.hasMoreQuestions()){
-            displayedScore.setText("SCORE :" + score);
-        }
-            else {
-            displayedScore.setText("SCORE :" + score);
+    private void displayQuestion() {
+        if(quiz.isThereAnotherQuestion()){
+            Question aquestion = questions[quiz.getCurrentQuestion()];
+            questionDisplayed.setText(aquestion.getQuestion());
+        }else{
+            questionDisplayed.setText("No more Questions");
         }
     }
 
-    private void setonClickListeners() {
-        truebutton.setOnClickListener((View.OnClickListener) this);
-        falsebutton.setOnClickListener((View.OnClickListener) this);
 
+    private void setOnClickListeners() {
+        falsee.setOnClickListener(this);
+        truee.setOnClickListener(this);
     }
+
 
     private void wireWidgets() {
-        displayedQuestion = findViewById(R.id.textView_main_displayedQuestion);
-        truebutton = findViewById(R.id.button_main_truebutton);
-        falsebutton = findViewById(R.id.button_main_falsebutton);
-        displayedScore = findViewById(R.id.textView_main_score);
-
+        questionDisplayed = findViewById(R.id.textView_main_displayedQuestion);
+        falsee = findViewById(R.id.button_main_falsebutton);
+        truee = findViewById(R.id.button_main_truebutton);
+        scoreDisplayed = findViewById(R.id.textView_main_score);
     }
-
 
     public String readTextFile(InputStream inputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -120,27 +108,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return outputStream.toString();
     }
-    public void onClick(View view){
-        switch (view.getId()){
+
+    public void onClick(View view) {
+        //one method to handel the clicks of all the buttons
+        //but don't forget to tell the buttons who is doing the listening
+        switch (view.getId()) {
             case R.id.button_main_falsebutton:
-                userAnswer= false;
-                Question aquestion = questions[quiz.getCurrentQuestions()];
-                if((userAnswer == aquestion.isAnswer())) {
+                userAnswer = false;
+                Question aquestion = questions[quiz.getCurrentQuestion()];
+                if ((userAnswer) == aquestion.isAnswer() ) {
                     Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
                     score++;
-                }else{
-                    Toast.makeText(this, "Wrong", Toast.LENGTH_SHORT).show();
-                    score--;
+                } else {
+                    Toast.makeText(this, "WRONG", Toast.LENGTH_SHORT).show();
                 }
-                quiz.hasMoreQuestions();
+                quiz.isThereAnotherQuestion();
                 quiz.nextQuestion();
+                displayQuestion();
                 displayScore();
-                displayNextQuestion();
+                break;
+            case R.id.button_main_truebutton:
+                userAnswer = true;
+                Question bquestion = questions[quiz.getCurrentQuestion()];
+
+                if ((userAnswer) == bquestion.isAnswer() ) {
+                    Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
+                    score++;
+                } else {
+                    Toast.makeText(this, "WRONG", Toast.LENGTH_SHORT).show();
+                }
+                quiz.isThereAnotherQuestion();
+                quiz.nextQuestion();
+                displayQuestion();
+                displayScore();
                 break;
         }
-
     }
 
-
 }
-
